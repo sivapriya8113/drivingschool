@@ -1,0 +1,83 @@
+{% extends 'students/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Welcome {{ student.user.first_name }}</h2>
+  
+  <div class="row mt-4">
+    <!-- Upcoming Sessions -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          Upcoming Sessions
+        </div>
+        <div class="card-body">
+          {% if upcoming_sessions %}
+            <ul class="list-group">
+              {% for session in upcoming_sessions %}
+                <li class="list-group-item">
+                  <strong>{{ session.session_date|date:"l, F j, Y" }}</strong>
+                  at {{ session.get_time_slot_display }}
+                  <br>
+                  <small>Trainer: {{ session.trainer.user.get_full_name }}</small>
+                  <br>
+                  <small>Vehicle: {{ session.vehicle.model }} ({{ session.vehicle.get_vehicle_type_display }})</small>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>You have no upcoming sessions. <a href="{% url 'students:courses' %}">Book one now</a>!</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          Packages Purchased
+        </div>
+        <div class="card-body">
+          {% if bookings %}
+            <ul class="list-group">
+              {% for session in bookings %}
+                <li class="list-group-item " >
+
+                  <br>
+                  <strong>Package: {{ session.package.name }}</strong>
+                  <br>
+                  <small>Sessions: {{ session.remaining_sessions }} </small>
+                  <br>Date: {{session.purchase_date}}
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>You have no Bookings. <a href="{% url 'students:courses' %}">Book one now</a>!</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Tutorials -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          Available Tutorials
+        </div>
+        <div class="card-body">
+          {% if tutorials %}
+            <ul class="list-group">
+              {% for tutorial in tutorials %}
+                <li class="list-group-item">
+                  <a href="{% url 'students:view_tutorial' tutorial.id %}">{{ tutorial.title }}</a>
+                  <br>
+                  <small>{{ tutorial.description|truncatechars:100 }}</small>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>No tutorials available at this time.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

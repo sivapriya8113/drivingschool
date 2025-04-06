@@ -1,0 +1,48 @@
+<!-- admins/templates/admins/manage_vehicles.html -->
+{% extends 'base.html' %}
+
+{% block title %}Manage Vehicles{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Manage Vehicles</h1>
+    
+    <div class="mt-3 mb-3">
+        <a href="{% url 'admins:admin_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+        <a href="#" class="btn btn-primary">Add New Vehicle</a>
+    </div>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Registration Number</th>
+                <th>Vehicle Type</th>
+                <th>Model</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehicle in vehicles %}
+            <tr>
+                <td>{{ vehicle.id }}</td>
+                <td>{{ vehicle.registration_number }}</td>
+                <td>{{ vehicle.get_vehicle_type_display }}</td>
+                <td>{{ vehicle.model }}</td>
+                <td>{{ vehicle.get_status_display }}</td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-info">View</a>
+                    <a href="#" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No vehicles added yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

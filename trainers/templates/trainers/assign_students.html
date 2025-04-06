@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Assign Students to {{ trainer.user.get_full_name }}</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student_package in students %}
+            <tr>
+                <td>{{ student_package.student.user.get_full_name }}</td>
+                <td>{{ student_package.student.phone_number }}</td>
+                <td>{{ student_package.student.student_type }}</td>
+                <td>
+                    {% if student_package.student.trainer %}
+                        <a href="{% url 'trainers:assign_training_session' student_package.student.id %}" class="btn btn-sm btn-primary">
+                            Assign Training Session
+                        </a>
+                    {% else %}
+                        <button class="btn btn-sm btn-secondary" disabled>
+                            Assign Trainer First
+                        </button>
+                        <a href="{% url 'trainers:assign_trainer_vehicle' student_package.student.id %}" class="btn btn-sm btn-warning">
+                            Assign Trainer
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No students available for assignment.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'trainers:trainer_detail' trainer.id %}" class="btn btn-secondary">Back to Trainer</a>
+</div>
+{% endblock %}
